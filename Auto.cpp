@@ -26,10 +26,10 @@ int main() {
     g<float>();
 
     {
-        auto x = 5;
-        auto& y = x;
-        const auto& z = y;
-        auto&& w = x;
+        auto x = 5;                      // int
+        auto& y = x;                // int&
+        const auto& z = y;      // const int&
+        auto&& w = x;               // int&
     }
 
     return 0;

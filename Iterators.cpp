@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <map>
 #include <vector>
 
 template <typename InputIterator>
@@ -25,8 +26,10 @@ mydistance(Iterator first, Iterator last) {
 int main() {
 
     const std::vector<int> vec(7);
+    const std::map<int, int> m {{1,2},{2,3},{3,4}};
 
-    std::cout << mydistance(vec.begin(), vec.end());
+    std::cout << mydistance(vec.begin(), vec.end()) << std::endl;
+    std::cout << mydistance(m.begin(), m.end());
 
     return 0;
 }

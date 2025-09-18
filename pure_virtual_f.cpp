@@ -3,7 +3,9 @@
 struct Granny {
     virtual ~Granny() = default;
 
-    virtual void f() {}
+    virtual void f() {
+        std::cout << "Granny" << std::endl;
+    }
     void non_virtual_granny();
 
     int g;
@@ -12,7 +14,9 @@ struct Granny {
 struct Mom: virtual Granny {
     int m = 7;
 
-    void f() override {}
+    void f() override {
+        std::cout << "Mom" << std::endl;
+    }
     virtual void mom() {}
 
     void non_virtual_mom() {}
@@ -21,7 +25,9 @@ struct Mom: virtual Granny {
 struct Dad: virtual Granny {
     int d = 3;
 
-    void f() override {}
+    void f() override {
+        std::cout << "Dad" << std::endl;
+    }
     virtual void dad() {}
 
     void non_virtual_dad() {}
@@ -41,13 +47,15 @@ struct Son: Mom, Dad {
 int main() {
     Son son;
 
-    void** vptr = reinterpret_cast<void **>(&son);
+    void**** vptr = reinterpret_cast<void ****>(&son); // pointer to vtable
 
-    std::cout << vptr << std::endl;
-    std::cout << *vptr << std::endl;
+    void (*fptr)(Son*, int, int) = reinterpret_cast<void(*)(Son*, int, int)>(**vptr); // **vptr - the address that contains pointer to Son::f
+    fptr(&son, 1, 0); // print: Son
 
-    void (*f)(Son*, int, int) = reinterpret_cast<void(*)(Son*, int, int)>(*vptr);
-    f(&son, 1, 0);
+    void*** rtti_ptr = *vptr - 1; // pointer to RTTI
+    void** typename_ptr  = *rtti_ptr + 1; // pointer to type name
+
+    std::cout << static_cast<char*>(*typename_ptr) << std::endl; // print : 3Son
 
     return 0;
 }
